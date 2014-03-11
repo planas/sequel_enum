@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.version       = SequelEnum::VERSION
   spec.authors       = ["Adrià Planas"]
   spec.email         = ["adriaplanas@liquidcodeworks.com"]
-  spec.summary       = %q{Provides enum-like functionality to Sequel}
+  spec.summary       = %q{A Sequel plugin that provides enum-like functionality to your models}
   spec.homepage      = "https://github.com/planas/sequel_enum"
   spec.license       = "MIT"
 
