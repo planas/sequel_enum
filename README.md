@@ -19,37 +19,37 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-  class Item < Sequel::Model
-    plugin :enum
-    enum :condition, [:mint, :good, :poor]
-  end
+class Item < Sequel::Model
+  plugin :enum
+  enum :condition, [:mint, :good, :poor]
+end
 
-  item = Item.new
-  item.condition = :mint
+item = Item.new
+item.condition = :mint
 
-  item.condition #> :mint
-  item.mint? #> true
-  item.good? #> false
-```ruby
+item.condition #> :mint
+item.mint? #> true
+item.good? #> false
+```
 
 ```#enum``` accepts a hash like ```{ index => value }``` as well:
 
 ```ruby
-  class Item < Sequel::Model
-    plugin :enum
-    enum :condition, [10 => :mint, 11 => :good, 15 => :poor]
-  end
+class Item < Sequel::Model
+  plugin :enum
+  enum :condition, {10 => :mint, 11 => :good, 15 => :poor}
+end
 
-  item = Item.new
-  item.condition = :mint
+item = Item.new
+item.condition = :mint
 
-  item[:condition] #> 10
-```ruby
+item[:condition] #> 10
+```
 
 
 ## Contributing
 
-1. Fork it ( http://github.com/<my-github-username>/sequel_enum/fork )
+1. Fork it ( http://github.com/planas/sequel_enum/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
