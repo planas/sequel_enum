@@ -10,6 +10,15 @@ module Sequel
       module ClassMethods
         attr_reader :enums
 
+        def symbolize(hash)
+          self.enums.each do |key, val|
+            s_key = key.to_s
+            hash[key] = hash[key].to_sym if hash[key]
+            hash[s_key] = hash[s_key].to_sym if hash[s_key]
+          end
+          hash
+        end
+
         def enum(column, values)
           if values.is_a? Hash
             values.each do |key,val|
@@ -20,6 +29,14 @@ module Sequel
             values = Hash[values.map.with_index { |v, i| [i,v] }]
           else
             raise ArgumentError, "#enum expects the second argument to be an array of symbols or a hash like { index => :value }"
+          end
+
+          define_method "update" do |hash|
+            super self.class.symbolize(hash)
+          end
+
+          define_method "initialize_set" do |hash = {}|
+            super self.class.symbolize(hash)
           end
 
           define_method "#{column}=" do |value|

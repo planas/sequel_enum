@@ -15,9 +15,17 @@ RSpec.configure do |config|
       column :name, String
       column :condition, Integer
     end
+
+    DB.create_table :collectors_items do
+      primary_key :id
+      column :name, String
+      column :condition, Integer
+      column :edition, Integer
+    end
   end
 
   config.after(:suite) do
     DB.drop_table :items
+    DB.drop_table :collectors_items
   end
 end
