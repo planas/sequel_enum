@@ -4,6 +4,12 @@ class Item < Sequel::Model
   plugin :enum
 end
 
+class CollectorsItem < Sequel::Model
+  plugin :enum
+  enum :condition, [:mint, :very_good, :good, :poor]
+  enum :edition, [:first, :second, :rare, :other]
+end
+
 describe "sequel_enum" do
   let(:item) { Item.new }
 
@@ -39,6 +45,36 @@ describe "sequel_enum" do
   describe "methods" do
     before(:all) do
       Item.enum :condition, [:mint, :very_good, :good, :poor]
+    end
+
+    describe "#initialize_set" do
+      it "accepts string values as a hash" do
+        i = Item.new "condition" => "poor"
+        i[:condition].should eq 3
+      end
+
+      it "handles multiple enums" do
+        i = CollectorsItem.new("condition" => "mint",
+                               "edition" => "first")
+        i[:condition].should eq 0
+        i[:edition].should eq 0
+      end
+    end
+
+    describe "#update" do
+      it "accepts string values in update" do
+        item.save
+        item.update "condition" => "very_good"
+        item[:condition].should eq 1
+      end
+
+      it "handles multiple enums" do
+        i = CollectorsItem.new("condition" => "mint",
+                               "edition" => "first")
+        i.save
+        i.update "edition" => "second"
+        i[:edition].should eq 1
+      end
     end
 
     describe "#column=" do
