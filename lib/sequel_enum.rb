@@ -2,19 +2,17 @@ module Sequel
   module Plugins
     module Enum
       def self.apply(model, opts = OPTS)
-        model.instance_eval do
-          @enums = {}
-        end
       end
 
       module ClassMethods
-        attr_reader :enums
+        attr_accessor :enums
 
         def enum(column, values)
+          self.enums = {}
           if values.is_a? Hash
             values.each do |key,val|
-              raise ArgumentError, "index should be numeric, #{key} provided wich it's a #{key.class}" unless key.is_a? Fixnum
-              raise ArgumentError "value should be a symbol, #{val} provided wich it's a #{val.class}" unless val.is_a? Symbol
+              raise ArgumentError, "index should be a symbol, #{key} provided which it's a #{key.class}" unless key.is_a? Symbol
+              raise ArgumentError "value should be numeric, #{val} provided which it's a #{val.class}" unless val.is_a? Fixnum
             end
           elsif values.is_a? Array
             values = Hash[values.map.with_index { |v, i| [i,v] }]
@@ -36,8 +34,7 @@ module Sequel
               self.send(column) == value
             end
           end
-
-          enums[column] = values
+          self.enums[column] = values
         end
       end
     end

@@ -20,7 +20,7 @@ describe "sequel_enum" do
 
   specify "it accepts a hash of index => value" do
     expect{
-      Item.enum :condition, 0 => :mint, 1 => :very_good, 2 => :good, 3 => :poor
+      Item.enum :condition, :mint => 0, :very_good => 1, :good => 2, :poor => 3
     }.not_to raise_error
   end
 
