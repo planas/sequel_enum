@@ -9,7 +9,7 @@ describe "sequel_enum" do
 
   specify "class should provide reflection" do
     Item.enum :condition, [:mint, :very_good, :fair]
-    Item.enums.should eq({ condition: { 0 => :mint, 1 => :very_good, 2 => :fair}})
+    expect(Item.enums).to eq({ condition: { :mint => 0, :very_good => 1, :fair => 2}})
   end
 
   specify "it accepts an array of symbols" do
@@ -45,14 +45,14 @@ describe "sequel_enum" do
       context "with a valid value" do
         it "should set column to the value index" do
           item.condition = :mint
-          item[:condition].should eq 0
+          expect(item[:condition]).to be 0
         end
       end
 
       context "with an invalid value" do
         it "should set column to nil" do
           item.condition = :fair
-          item[:condition].should be_nil
+          expect(item[:condition]).to be_nil
         end
       end
     end
@@ -61,14 +61,14 @@ describe "sequel_enum" do
       context "with a valid index stored on the column" do
         it "should return its matching value" do
           item[:condition] = 1
-          item.condition.should eq :very_good
+          expect(item.condition).to be :very_good
         end
       end
 
       context "with an invalid index stored on the column" do
         it "should return nil" do
           item[:condition] = 10
-          item.condition.should be_nil
+          expect(item.condition).to be_nil
         end
       end
     end
@@ -77,14 +77,14 @@ describe "sequel_enum" do
       context "when the actual value match" do
         it "should return true" do
           item.condition = :good
-          item.good?.should eq true
+          expect(item.good?).to be true
         end
       end
 
       context "when the actual value doesn't match" do
         it "should return false" do
           item.condition = :mint
-          item.poor?.should eq false
+          expect(item.poor?).to be false
         end
       end
     end
