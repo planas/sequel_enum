@@ -27,25 +27,31 @@ end
 item = Item.new
 item.condition = :mint
 
-item.condition #> :mint
-item.mint? #> true
-item.good? #> false
+print item.condition #> :mint
+print item.mint? #> true
+print item.good? #> false
 ```
 
-```#enum``` accepts a hash like ```{ index => value }``` as well:
+```#enum``` accepts a hash like ```{ :alias => value }``` as well:
 
 ```ruby
 class Item < Sequel::Model
   plugin :enum
-  enum :condition, {10 => :mint, 11 => :good, 15 => :poor}
+  enum :condition, { mint: 10, good: 11, poor: 15 }
 end
 
 item = Item.new
 item.condition = :mint
 
-item[:condition] #> 10
+print item[:condition] #> 10
 ```
 
+You can set the raw value through the []= accessor:
+
+```ruby
+item[:condition] = 15
+print item[:condition] #> :poor
+```
 
 ## Contributing
 
