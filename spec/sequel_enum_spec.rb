@@ -50,14 +50,14 @@ describe "sequel_enum" do
     describe "#initialize_set" do
       it "accepts string values as a hash" do
         i = Item.new "condition" => "poor"
-        i[:condition].should eq 3
+        expect(i[:condition]).to eq 3
       end
 
       it "handles multiple enums" do
         i = CollectorsItem.new("condition" => "mint",
                                "edition" => "first")
-        i[:condition].should eq 0
-        i[:edition].should eq 0
+        expect(i[:condition]).to eq 0
+        expect(i[:edition]).to eq 0
       end
     end
 
@@ -65,7 +65,7 @@ describe "sequel_enum" do
       it "accepts string values in update" do
         item.save
         item.update "condition" => "very_good"
-        item[:condition].should eq 1
+        expect(item[:condition]).to eq 1
       end
 
       it "handles multiple enums" do
@@ -73,7 +73,7 @@ describe "sequel_enum" do
                                "edition" => "first")
         i.save
         i.update "edition" => "second"
-        i[:edition].should eq 1
+        expect(i[:edition]).to eq 1
       end
     end
 
