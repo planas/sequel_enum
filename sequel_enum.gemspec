@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.name          = "sequel_enum"
   spec.version       = SequelEnum::VERSION
   spec.authors       = ["Adrià Planas"]
-  spec.email         = ["adriaplanas@liquidcodeworks.com"]
+  spec.email         = ["adriaplanas@edgecodeworks.com"]
   spec.summary       = %q{A Sequel plugin that provides enum-like functionality to your models}
   spec.homepage      = "https://github.com/planas/sequel_enum"
   spec.license       = "MIT"
@@ -17,6 +17,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
+
+  spec.required_ruby_version = '>= 2.3'
 
   spec.add_runtime_dependency "sequel"
 
