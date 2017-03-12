@@ -4,12 +4,6 @@ class Item < Sequel::Model
   plugin :enum
 end
 
-class CollectorsItem < Sequel::Model
-  plugin :enum
-  enum :condition, [:mint, :very_good, :good, :poor]
-  enum :edition, [:first, :second, :rare, :other]
-end
-
 describe "sequel_enum" do
   let(:item) { Item.new }
 
@@ -32,7 +26,7 @@ describe "sequel_enum" do
 
   specify "it rejects an invalid hash" do
     expect{
-      Item.enum :condition, { '0' => :mint }
+      Item.enum :condition, { :mint => '0' }
     }.to raise_error(ArgumentError)
   end
 
@@ -45,34 +39,28 @@ describe "sequel_enum" do
   describe "methods" do
     before(:all) do
       Item.enum :condition, [:mint, :very_good, :good, :poor]
+      Item.enum :edition, [:first, :second, :rare, :other]
     end
 
     describe "#initialize_set" do
-      it "accepts string values as a hash" do
-        i = Item.new "condition" => "poor"
-        expect(i[:condition]).to eq 3
-      end
-
       it "handles multiple enums" do
-        i = CollectorsItem.new("condition" => "mint",
-                               "edition" => "first")
+        i = Item.create(:condition => :mint, :edition => :first)
+
         expect(i[:condition]).to eq 0
         expect(i[:edition]).to eq 0
       end
     end
 
     describe "#update" do
-      it "accepts string values in update" do
-        item.save
-        item.update "condition" => "very_good"
-        expect(item[:condition]).to eq 1
+      it "accepts strings" do
+        i = Item.create(:condition => "mint")
+        expect(i[:condition]).to eq 0
       end
 
       it "handles multiple enums" do
-        i = CollectorsItem.new("condition" => "mint",
-                               "edition" => "first")
-        i.save
-        i.update "edition" => "second"
+        i = Item.create(:condition => :mint, :edition => :first)
+        i.update(:edition => :second)
+
         expect(i[:edition]).to eq 1
       end
     end
