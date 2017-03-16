@@ -23,11 +23,13 @@ module Sequel
           end
 
           define_method "#{column}=" do |value|
-            self[column] = self.class.enums[column].assoc(value.to_sym)&.last
+            val = self.class.enums[column].assoc(value.to_sym)
+            self[column] = val && val.last
           end
 
           define_method "#{column}" do
-            self.class.enums[column].rassoc(self[column])&.first
+            val = self.class.enums[column].rassoc(self[column])
+            val && val.first
           end
 
           values.each do |key, value|
