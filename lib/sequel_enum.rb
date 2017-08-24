@@ -9,7 +9,6 @@ module Sequel
 
       module ClassMethods
         attr_reader :enums
-
         def enum(column, values)
           if values.is_a? Hash
             values.each do |key,val|
@@ -23,13 +22,32 @@ module Sequel
           end
 
           define_method "#{column}=" do |value|
-            val = self.class.enums[column].assoc(value.to_sym)
-            self[column] = val && val.last
+            if value.is_a? Integer 
+              values.each do |k,v|
+                if v == value
+                  self[column] = value
+                end
+                raise(ArgumentError,"Not a valid #{column}") if self[column].nil?
+              end
+            else
+              val = self.class.enums[column].assoc(value.to_sym)
+              self[column] = val && val.last
+            end
           end
 
           define_method "#{column}" do
             val = self.class.enums[column].rassoc(self[column])
             val && val.first
+          end
+          
+          define_method "#{column}?" do |value|
+            if value.is_a? Symbol
+              self.send(column) == value
+            elsif value.is_a? Integer
+              self[column] == value
+            else
+              raise ArgumentError
+            end
           end
 
           values.each do |key, value|

@@ -3,7 +3,6 @@ require 'sqlite3'
 require 'sequel_enum'
 
 DB = Sequel.connect('sqlite://test.db')
-
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.order = 'random'

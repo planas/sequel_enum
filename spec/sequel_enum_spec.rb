@@ -56,6 +56,16 @@ describe "sequel_enum" do
         i = Item.create(:condition => "mint")
         expect(i[:condition]).to eq 0
       end
+      
+      it "accepts integer values" do
+        i = Item.create(:condition => 0)
+        expect(i[:condition]).to eq 0
+      end
+      it "accepts only predefined integer values" do
+        expect{
+        i = Item.create(:condition => 4567)
+        }.to raise_error(ArgumentError)
+      end
 
       it "handles multiple enums" do
         i = Item.create(:condition => :mint, :edition => :first)
@@ -96,7 +106,33 @@ describe "sequel_enum" do
         end
       end
     end
-
+    describe "#column?(val)" do
+      context "with symol values" do
+        it "should return true " do
+          item.condition = :good
+          expect(item.condition? :good).to be true
+        end
+        it "should return false" do
+          item.condition = :mint
+          expect(item.condition? :poor).to be false
+        end
+      end
+      context "with integer values" do
+        it "should return true " do
+          item.condition = :good
+          expect(item.condition? 2).to be true
+        end
+        it "should return false" do
+          item.condition = :good
+          expect(item.condition? 0).to be false
+        end
+      end
+      it "should raise ArgumentError" do
+        expect{
+            item.condition? "wrong_argument"
+        }.to raise_error(ArgumentError)
+      end
+    end
     describe "#column?" do
       context "when the actual value match" do
         it "should return true" do

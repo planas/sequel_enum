@@ -34,6 +34,7 @@ print item.good? #> false
 item.update(:condition => :good)
 
 print item.good? #> true
+print item.condition? :good #> true
 ```
 
 ```#enum``` accepts a hash like ```{ :alias => value }``` as well:
@@ -55,7 +56,12 @@ You can set the raw value through the []= accessor:
 item[:condition] = 15
 print item.condition #> :poor
 ```
+You can set the raw value directly
 
+```ruby
+item.condition = 15
+print item.condition #> :poor
+```
 ## Contributing
 
 1. Fork it ( http://github.com/planas/sequel_enum/fork )
