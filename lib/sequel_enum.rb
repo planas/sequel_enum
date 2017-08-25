@@ -49,6 +49,10 @@ module Sequel
               raise ArgumentError
             end
           end
+          
+          define_singleton_method "#{column}" do
+            self.enums[column]
+          end
 
           values.each do |key, value|
             define_method "#{key}?" do

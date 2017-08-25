@@ -73,6 +73,10 @@ describe "sequel_enum" do
 
         expect(i[:edition]).to eq 1
       end
+      
+      it "return raw value of enum" do
+        expect(Item.condition[:good]).to eq 2
+      end
     end
 
     describe "#column=" do
