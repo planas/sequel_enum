@@ -4,12 +4,23 @@ class Item < Sequel::Model
   plugin :enum
 end
 
+AbstractModel = Class.new(Sequel::Model)
+AbstractModel.require_valid_table = false
+AbstractModel.plugin :enum
+
+class RealModel < AbstractModel; end
+
 describe "sequel_enum" do
   let(:item) { Item.new }
 
   specify "class should provide reflection" do
     Item.enum :condition, [:mint, :very_good, :fair]
     expect(Item.enums).to eq({ condition: { :mint => 0, :very_good => 1, :fair => 2}})
+  end
+
+  specify "inheriting from abstract model should provide reflection" do
+    RealModel.enum :condition, [:mint, :very_good, :fair]
+    expect(RealModel.enums).to eq({ condition: { :mint => 0, :very_good => 1, :fair => 2}})
   end
 
   specify "it accepts an array of symbols" do
