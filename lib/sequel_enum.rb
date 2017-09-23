@@ -2,13 +2,13 @@ module Sequel
   module Plugins
     module Enum
       def self.apply(model, opts = OPTS)
-        model.instance_eval do
-          @enums = {}
-        end
       end
 
       module ClassMethods
-        attr_reader :enums
+        
+        def enums
+          @enums ||= {}
+        end
 
         def enum(column, values)
           if values.is_a? Hash
