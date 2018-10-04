@@ -50,7 +50,20 @@ describe "sequel_enum" do
   describe "methods" do
     before(:all) do
       Item.enum :condition, [:mint, :very_good, :good, :poor]
-      Item.enum :edition, [:first, :second, :rare, :other]
+      Item.enum :edition, {first: 0, second: 1, rare: 2, other: 3}
+    end
+
+    context "list enums of a column" do
+      describe ".conditions" do
+        it "return the enum list options defined for condition" do
+          expect(Item.conditions).to eq({mint: 0, very_good: 1, good: 2, poor: 3})
+        end
+      end
+      describe ".editions" do
+        it "return the enum list options defined for condition" do
+          expect(Item.editions).to eq({first: 0, second: 1, rare: 2, other: 3})
+        end
+      end
     end
 
     describe "#initialize_set" do
