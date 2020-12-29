@@ -1,16 +1,6 @@
 require 'spec_helper'
 
-class Item < Sequel::Model
-  plugin :enum
-end
-
-AbstractModel = Class.new(Sequel::Model)
-AbstractModel.require_valid_table = false
-AbstractModel.plugin :enum
-
-class RealModel < AbstractModel; end
-
-describe "sequel_enum" do
+RSpec.describe "sequel_enum" do
   let(:item) { Item.new }
 
   specify "class should provide reflection" do
@@ -81,6 +71,11 @@ describe "sequel_enum" do
         it "should set column to the value index" do
           item.condition = :mint
           expect(item[:condition]).to be 0
+        end
+
+        it "should set column to the blank value" do
+          item.condition = nil
+          expect(item[:condition]).to be nil
         end
       end
 
