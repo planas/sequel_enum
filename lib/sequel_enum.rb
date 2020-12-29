@@ -5,7 +5,7 @@ module Sequel
       end
 
       module ClassMethods
-        
+
         def enums
           @enums ||= {}
         end
@@ -23,13 +23,11 @@ module Sequel
           end
 
           define_method "#{column}=" do |value|
-            val = self.class.enums[column].assoc(value&.to_sym)
-            self[column] = val && val.last
+            self[column] = self.class.enums[column].assoc(value&.to_sym)&.last
           end
 
           define_method "#{column}" do
-            val = self.class.enums[column].rassoc(self[column])
-            val && val.first
+            self.class.enums[column].rassoc(self[column])&.first
           end
 
           values.each do |key, value|
